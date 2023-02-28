@@ -1,0 +1,35 @@
+-- Check if the user inputted the correct key
+if key == "eo92f9qr88" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "t5k3h7by88" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "j7r6c8qz92" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "f2v9s5lw88" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "g9y2d4tx88" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "n1m5p7qr92" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+if key == "k8j3h6bx88" then
+    -- If the key is correct, execute the code below
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix/main/revival"))()
+else
+    -- If the key is incorrect, do nothing
+game.StarterGui:SetCore("SendNotification", {
+            Title = "Invalid Key",
+            Text = "Please DM losix"
+         })
+      end
