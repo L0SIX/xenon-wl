@@ -17,6 +17,11 @@ presents
 ╚═╝░░╚═╝╚══════╝╚═╝░░╚══╝░╚════╝░╚═╝░░╚══╝
 
 ]]
+-- rolves
+-- color corection
+-- breakes jump pred
+-- inf jump, no slow
+-- PREDICTION IS VERY IMPORTANT
 local new = {
    main = {
       losix = true,
