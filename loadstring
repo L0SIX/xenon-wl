@@ -1,3 +1,9 @@
+local CurrentCamera = game:GetService "Workspace".CurrentCamera
+local Mouse = game.Players.LocalPlayer:GetMouse()
+local RunService = game:GetService("RunService")
+local Plr = game.Players.LocalPlayer
+local Line = Drawing.new("Line")
+local Inset = game:GetService("GuiService"):GetGuiInset().Y
 Mouse.KeyDown:Connect(function(KeyPressed)
 if KeyPressed == (new.main.Key) then
    if new.main.losix == true then
