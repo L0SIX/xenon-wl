@@ -68,6 +68,58 @@ local new = {
       TracerColor = Color3.fromRGB(255, 255, 255)
    }
 } -- Settings by Thusky
+-- Set prediction value based on player's ping
+local function SetPrediction(ping)
+    if ping >= 0 and ping <= 20 then
+        new.main.Prediction = 0.9
+    elseif ping > 20 and ping <= 30 then
+        new.main.Prediction = 0.115
+    elseif ping > 30 and ping <= 40 then
+        new.main.Prediction = 0.12588
+    elseif ping > 40 and ping <= 50 then
+        new.main.Prediction = 0.11911
+    elseif ping > 50 and ping <= 60 then
+        new.main.Prediction = 0.1211
+    elseif ping > 60 and ping <= 70 then
+        new.main.Prediction = 0.12766
+    elseif ping > 70 and ping <= 80 then
+        new.main.Prediction = 0.12731
+    elseif ping > 80 and ping <= 90 then
+        new.main.Prediction = 0.12951
+    elseif ping > 90 and ping <= 100 then
+        new.main.Prediction = 0.13181
+    elseif ping > 100 and ping <= 110 then
+        new.main.Prediction = 0.13573
+    elseif ping > 110 and ping <= 120 then
+        new.main.Prediction = 0.13334
+    elseif ping > 120 and ping <= 130 then
+        new.main.Prediction = 0.14552
+    elseif ping > 130 and ping <= 140 then
+        new.main.Prediction = 0.14376
+    elseif ping > 140 and ping <= 150 then
+        new.main.Prediction = 0.15669
+    elseif ping > 150 and ping <= 160 then
+        new.main.Prediction = 0.12234
+    elseif ping > 160 and ping <= 170 then
+        new.main.Prediction = 0.15214
+    elseif ping > 170 and ping <= 180 then
+        new.main.Prediction = 0.16262
+    elseif ping > 180 and ping <= 190 then
+        new.main.Prediction = 0.19231
+    elseif ping > 190 and ping <= 200 then
+        new.main.Prediction = 0.19284
+    elseif ping > 200 and ping <= 210 then
+        new.main.Prediction = 0.16594
+    else
+    end
+end
+
+-- Check player's ping and set initial prediction value
+local function InitPrediction()
+    local ping = game:GetService("Players").LocalPlayer:Ping()
+    SetPrediction(ping)
+end
+
 local CurrentCamera = game:GetService "Workspace".CurrentCamera
 local Mouse = game.Players.LocalPlayer:GetMouse()
 local RunService = game:GetService("RunService")
