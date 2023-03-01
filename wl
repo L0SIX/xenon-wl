@@ -99,31 +99,24 @@ end)
 sec2:Button("Aim-Viewer", function()
   loadstring(game:HttpGet("https://raw.githubusercontent.com/Nosssa/NossLock/main/VinGUI"))()    
 end)
-    else
-        while true do
-            local Players = game:GetService("Players")
-
-local function onPlayerAdded(player)
-    player.Chatted:Connect(function(message)
-        if message:lower() == "/kick" then
-            player:Kick("skidddddddd")
-        end
-    end)
-end
-
-Players.PlayerAdded:Connect(onPlayerAdded)
-
-        end
-    end
-end
-
 
 function blacklist()
     local userid = game.Players.LocalPlayer
     
     if table.find(blacklist) then
         while true do
-            print('skiddes got crashed')
+            local Players = game:GetService("Players")
+
+local function onPlayerAdded(player)
+    player.Chatted:Connect(function(message)
+        if message:lower() == "/kick" then
+            player:Kick("skiddddddd")
+        end
+    end)
+end
+
+Players.PlayerAdded:Connect(onPlayerAdded)
+
         end
     end
 end
