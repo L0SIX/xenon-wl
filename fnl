@@ -64,7 +64,7 @@ local new = {
    },
    Tracer = {
       TracerThickness = 2.7,
-      TracerTransparency = 1.1,
+      TracerTransparency = 0.65,
       TracerColor = Color3.fromRGB(255, 255, 255)
    }
 } -- Settings by Thusky
