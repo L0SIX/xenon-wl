@@ -1,0 +1,52 @@
+getgenv().Xolium = {
+    Silent = {
+       ['Enabled'] = true,
+       ['Keybind'] = "L",
+       ['Prediction'] = 0.1211,
+       ['AutoPrediction'] = true,
+       ['AimPart'] = "Head",
+       ['HitChance'] = 100,
+       ['Resolver'] = true,
+    },
+    Tracer = {
+       ['Enabled'] = false,
+       ['Keybind'] = "Q",
+       ['Predict'] = false,
+       ['Prediction'] = 0.1243,
+       ['Smoothness'] = 0.0687,
+       ['AimPart'] = "HumanoidRootPart",
+       ['NearestPart'] = true,
+       ['Shake'] = true,
+       ['ShakeValue'] = {['X'] = 15, ['Y'] = 5, ['Z'] = 5},
+       ['Resolver'] = true,
+    },
+    Fov = {
+      Silent = {
+          ['Visible'] = false,
+          ['Radius'] = 20,
+          ['Color'] = Color3.fromRGB(0, 0, 0),
+      },
+      Tracer = { 
+          ['Visible'] = false,
+          ['Radius'] = 40,
+          ['Color'] = Color3.fromRGB(0, 0, 0),
+      }
+    },
+    Range = {
+       ['Enabled'] = true,
+       ['Type'] = {['Fov'] = true, ['Prediction'] = false},
+       ['CloseFov'] = 70,
+       ['ClosePrediction'] = 0.121,
+       ['MidFov'] = 50,
+       ['MidPrediction'] = 0.125,
+       ['FarFov'] = 50,
+       ['FarPrediction'] = 0.129,
+       ['VeryFarFov'] = 7.5,
+       ['VeryFarPrediction'] = 0.132,
+    },
+    Checks = {
+       ['Wall'] = {['Silent'] = true, ['Tracer'] = true},
+       ['Knocked'] = {['Silent'] = true, ['Tracer'] = true},
+    },
+}
+loadstring(game:HttpGet("https://xolium.xyz/free.lua"))()
