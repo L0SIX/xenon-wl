@@ -22,37 +22,6 @@ presents
 -- breakes jump pred
 -- inf jump, no slow
 -- PREDICTION IS VERY IMPORTANT
-local RunService = game:GetService("RunService")
-
-local function zeroOutYVelocity(hrp)
-    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-end
-
-local function onPlayerAdded(player)
-    player.CharacterAdded:Connect(function(character)
-        local hrp = character:WaitForChild("HumanoidRootPart")
-        zeroOutYVelocity(hrp)
-    end)
-end
-
-local function onPlayerRemoving(player)
-    player.CharacterAdded:Disconnect()
-end
-
-game.Players.PlayerAdded:Connect(onPlayerAdded)
-game.Players.PlayerRemoving:Connect(onPlayerRemoving)
-
-RunService.Heartbeat:Connect(function()
-    pcall(function()
-        for i, player in pairs(game.Players:GetChildren()) do
-            if player.Name ~= game.Players.LocalPlayer.Name then
-                local hrp = player.Character.HumanoidRootPart
-                zeroOutYVelocity(hrp)
-            end
-        end
-    end)
-end)
 local new = {
    main = {
       losix = true,
@@ -68,57 +37,62 @@ local new = {
       TracerColor = Color3.fromRGB(255, 255, 255)
    }
 } -- Settings by Thusky
--- Set prediction value based on player's ping
+-- Set autopred to true
+local autopred = false -- not recommended, use your own sets or chnage the auto pred values
+
+-- Set the prediction value based on ping if autopred is true
 local function SetPrediction(ping)
-    if ping >= 0 and ping <= 20 then
+    if autopred and ping >= 0 and ping <= 20 then
         new.main.Prediction = 0.9
-    elseif ping > 20 and ping <= 30 then
+    elseif autopred and ping > 20 and ping <= 30 then
         new.main.Prediction = 0.115
-    elseif ping > 30 and ping <= 40 then
+    elseif autopred and ping > 30 and ping <= 40 then
         new.main.Prediction = 0.12588
-    elseif ping > 40 and ping <= 50 then
+    elseif autopred and ping > 40 and ping <= 50 then
         new.main.Prediction = 0.1211
-    elseif ping > 50 and ping <= 60 then
+    elseif autopred and ping > 50 and ping <= 60 then
         new.main.Prediction = 0.1211
-    elseif ping > 60 and ping <= 70 then
+    elseif autopred and ping > 60 and ping <= 70 then
         new.main.Prediction = 0.12766
-    elseif ping > 70 and ping <= 80 then
+    elseif autopred and ping > 70 and ping <= 80 then
         new.main.Prediction = 0.12731
-    elseif ping > 80 and ping <= 90 then
+    elseif autopred and ping > 80 and ping <= 90 then
         new.main.Prediction = 0.12951
-    elseif ping > 90 and ping <= 100 then
+    elseif autopred and ping > 90 and ping <= 100 then
         new.main.Prediction = 0.13181
-    elseif ping > 100 and ping <= 110 then
+    elseif autopred and ping > 100 and ping <= 110 then
         new.main.Prediction = 0.13573
-    elseif ping > 110 and ping <= 120 then
+    elseif autopred and ping > 110 and ping <= 120 then
         new.main.Prediction = 0.13334
-    elseif ping > 120 and ping <= 130 then
+    elseif autopred and ping > 120 and ping <= 130 then
         new.main.Prediction = 0.14552
-    elseif ping > 130 and ping <= 140 then
+    elseif autopred and ping > 130 and ping <= 140 then
         new.main.Prediction = 0.14376
-    elseif ping > 140 and ping <= 150 then
+    elseif autopred and ping > 140 and ping <= 150 then
         new.main.Prediction = 0.15669
-    elseif ping > 150 and ping <= 160 then
+    elseif autopred and ping > 150 and ping <= 160 then
         new.main.Prediction = 0.12234
-    elseif ping > 160 and ping <= 170 then
+    elseif autopred and ping > 160 and ping <= 170 then
         new.main.Prediction = 0.15214
-    elseif ping > 170 and ping <= 180 then
+    elseif autopred and ping > 170 and ping <= 180 then
         new.main.Prediction = 0.16262
-    elseif ping > 180 and ping <= 190 then
+    elseif autopred and ping > 180 and ping <= 190 then
         new.main.Prediction = 0.19231
-    elseif ping > 190 and ping <= 200 then
+    elseif autopred and ping > 190 and ping <= 200 then
         new.main.Prediction = 0.19284
-    elseif ping > 200 and ping <= 210 then
+    elseif autopred and ping > 200 and ping <= 210 then
         new.main.Prediction = 0.16594
-    else
     end
 end
 
--- Check player's ping and set initial prediction value
+-- Check player's ping and set initial prediction value if autopred is true
 local function InitPrediction()
-    local ping = game:GetService("Players").LocalPlayer:Ping()
-    SetPrediction(ping)
+    if autopred then
+        local ping = game:GetService("Players").LocalPlayer:Ping()
+        SetPrediction(ping)
+    end
 end
+
 
 local CurrentCamera = game:GetService "Workspace".CurrentCamera
 local Mouse = game.Players.LocalPlayer:GetMouse()
@@ -254,6 +228,37 @@ if new.main.AirshotFunc == true then
       end)
    end
 end
+local RunService = game:GetService("RunService")
+
+local function zeroOutYVelocity(hrp)
+    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+end
+
+local function onPlayerAdded(player)
+    player.CharacterAdded:Connect(function(character)
+        local hrp = character:WaitForChild("HumanoidRootPart")
+        zeroOutYVelocity(hrp)
+    end)
+end
+
+local function onPlayerRemoving(player)
+    player.CharacterAdded:Disconnect()
+end
+
+game.Players.PlayerAdded:Connect(onPlayerAdded)
+game.Players.PlayerRemoving:Connect(onPlayerRemoving)
+
+RunService.Heartbeat:Connect(function()
+    pcall(function()
+        for i, player in pairs(game.Players:GetChildren()) do
+            if player.Name ~= game.Players.LocalPlayer.Name then
+                local hrp = player.Character.HumanoidRootPart
+                zeroOutYVelocity(hrp)
+            end
+        end
+    end)
+end)
 -- no jump cooldown
 if not game.IsLoaded(game) then
    game.Loaded.Wait(game.Loaded);
@@ -285,3 +290,4 @@ if key == "WalkSpeed" and value < 16 then
 end
 return backup(self, key, value)
 end))
+
