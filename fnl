@@ -37,7 +37,7 @@ local new = {
       TracerColor = Color3.fromRGB(255, 255, 255)
    }
 } -- Settings by Thusky
--- Set autopred to true
+-- Set autopred to false
 local autopred = true -- not recommended, use your own sets or chnage the auto pred values
 
 -- Set the prediction value based on ping if autopred is true
