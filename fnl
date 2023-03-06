@@ -25,7 +25,7 @@ presents
 local new = {
    main = {
       losix = true,
-      Prediction = 0.1211,
+      Prediction = 0.13,
       Part = "HumanoidRootPart", -- Use Head, UpperTorso, HumanoidRootPart, LowerTorso, RightFoot, LeftFoot, RightArm, LeftArm
       Key = "q",
       Notifications = true,
