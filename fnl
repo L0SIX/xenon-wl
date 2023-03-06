@@ -38,7 +38,7 @@ local new = {
    }
 } -- Settings by Thusky
 -- Set autopred to true
-local autopred = false -- not recommended, use your own sets or chnage the auto pred values
+local autopred = true -- not recommended, use your own sets or chnage the auto pred values
 
 -- Set the prediction value based on ping if autopred is true
 local function SetPrediction(ping)
@@ -53,7 +53,7 @@ local function SetPrediction(ping)
     elseif autopred and ping > 50 and ping <= 60 then
         new.main.Prediction = 0.1211
     elseif autopred and ping > 60 and ping <= 70 then
-        new.main.Prediction = 0.12766
+        new.main.Prediction = 0.1211
     elseif autopred and ping > 70 and ping <= 80 then
         new.main.Prediction = 0.12731
     elseif autopred and ping > 80 and ping <= 90 then
