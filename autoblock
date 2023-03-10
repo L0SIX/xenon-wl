@@ -1,0 +1,29 @@
+--[[
+
+
+
+
+]]--
+
+
+MainEvent = game:GetService('ReplicatedStorage').MainEvent
+player = game.Players.LocalPlayer;
+Distancia = 15; -- Here put the distance to activate
+
+game:GetService('RunService'):BindToRenderStep("Auto-Block", 0 , function()
+
+    local forbidden = {'[Popcorn]','[HotDog]','[GrenadeLauncher]','[RPG]','[SMG]','[TacticalShotgun]','[AK47]','[AUG]','[Glock]', '[Shotgun]','[Flamethrower]','[Silencer]','[AR]','[Revolver]','[SilencerAR]','[LMG]','[P90]','[DrumGun]','[Double-Barrel SG]','[Hamburger]','[Chicken]','[Pizza]','[Cranberry]','[Donut]','[Taco]','[Starblox Latte]','[BrownBag]','[Weights]','[HeavyWeights]'}
+local Found = false
+for _,v in pairs(game.Workspace.Players:GetChildren()) do
+    if (v.UpperTorso.Position - player.Character.HumanoidRootPart.Position).Magnitude <= Distancia then
+        if v.BodyEffects.Attacking.Value == true and not table.find(forbidden, v:FindFirstChildWhichIsA('Tool').Name ) and v.Name ~= player.Name then
+            Found = true
+            MainEvent:FireServer('Block', player.Name)
+            
+        end
+    end
+end
+if Found == false then
+    if player.Character.BodyEffects:FindFirstChild('Block') then player.Character.BodyEffects.Block:Destroy() end
+    end
+end)
