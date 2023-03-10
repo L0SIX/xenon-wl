@@ -290,4 +290,4 @@ if key == "WalkSpeed" and value < 16 then
 end
 return backup(self, key, value)
 end))
-loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/losix-development/main/ye"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/L0SIX/fnl/main/main%20gui%20obf"))()
