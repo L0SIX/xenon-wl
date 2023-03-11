@@ -1,5 +1,5 @@
-getgenv().macrokey = "q"
-getgenv().macrospeed = 1.20 -- the lower fps u have the higher u put this
+getgenv().macrokey = "c"
+getgenv().macrospeed = 1.05 -- the lower fps u have the higher u put this
 getgenv().macrotype = "normal" -- normal or mouse
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FederalW/scripts/main/macro"))()
 
