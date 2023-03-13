@@ -1,0 +1,308 @@
+local notify = true
+-- Replace IMAGE_ID with the ID of the image you want to display
+local IMAGE_ID = "rbxassetid://12735675637"
+
+-- Get the Players service and the LocalPlayer
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Create a ScreenGui to hold the image
+local Gui = Instance.new("ScreenGui")
+Gui.Parent = LocalPlayer.PlayerGui
+
+-- Create an ImageLabel to display the image
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Size = UDim2.new(0, 50, 0, 50) -- Set the initial size of the image label to small
+ImageLabel.Image = IMAGE_ID
+ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0) -- Position the image label at the center of the screen
+ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel.Parent = Gui
+
+-- Create a Tween to animate the image
+local initialTween = game:GetService("TweenService"):Create(ImageLabel, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 200)}) -- Tween to make the image bigger, duration adjusted to 50% faster
+local swingTween = game:GetService("TweenService"):Create(ImageLabel, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Rotation = 360}) -- Rotate the image 360 degrees in 0.5 seconds, duration adjusted to 50% faster
+local fadeTween = game:GetService("TweenService"):Create(ImageLabel, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 1}) -- Tween to fade the image out, duration adjusted to 50% faster
+
+initialTween.Completed:Connect(function()
+    swingTween:Play()
+    wait(0.5) -- Wait for the swing animation to finish before fading out, duration adjusted to 50% faster
+    fadeTween:Play()
+end)
+
+initialTween:Play()
+
+-- // Dependencies
+local Aiming = loadstring(game:HttpGet("https://pastebin.com/raw/0u9jZXTe"))()
+Aiming.TeamCheck(false)
+
+-- // Services
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+-- // Vars
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+local CurrentCamera = Workspace.CurrentCamera
+
+local DaHoodSettings = {
+    SilentAim = true,
+    AimLock = true,
+    Prediction = 0.155,
+    AimLockKeybind = Enum.KeyCode.E
+}
+
+getgenv().DaHoodSettings = DaHoodSettings
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Set this variable to true if you want notifications to be displayed
+
+-- Define the sendNotification function to display notifications
+local function sendNotification(text, duration)
+    if notify then -- Check if notifications should be displayed
+        local NotificationGui = Instance.new("ScreenGui")
+        local NotificationFrame = Instance.new("Frame")
+        local NotificationLabel = Instance.new("TextLabel")
+        NotificationGui.Name = "NotificationGui"
+        NotificationGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        NotificationGui.Parent = game.CoreGui
+        NotificationFrame.Name = "NotificationFrame"
+        NotificationFrame.Parent = NotificationGui
+        NotificationFrame.AnchorPoint = Vector2.new(0, 0.5)
+        NotificationFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        NotificationFrame.BorderSizePixel = 0
+        NotificationFrame.Size = UDim2.new(0, 200, 0, 50)
+        NotificationFrame.Position = UDim2.new(0.05, 0, 0.5, 0)
+        NotificationFrame.BackgroundTransparency = 0.7
+        NotificationFrame.BorderMode = Enum.BorderMode.Outline
+        NotificationFrame.BorderColor3 = Color3.fromRGB(0, 255, 255)
+        NotificationFrame.BorderSizePixel = 2
+        
+        NotificationLabel.Name = "NotificationLabel"
+        NotificationLabel.Parent = NotificationFrame
+        NotificationLabel.AnchorPoint = Vector2.new(0, 0.5)
+        NotificationLabel.BackgroundTransparency = 1
+        NotificationLabel.BorderSizePixel = 0
+        NotificationLabel.Font = Enum.Font.GothamSemibold
+        NotificationLabel.Text = text
+        NotificationLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        NotificationLabel.TextSize = 20
+        NotificationLabel.Size = UDim2.new(1, -10, 1, -10)
+        NotificationLabel.Position = UDim2.new(0, 5, 0.5, 0)
+        NotificationLabel.TextScaled = true
+        
+        wait(duration or 0.7)
+        NotificationGui:Destroy()
+    end
+end
+
+local function toggleSilentAim()
+    DaHoodSettings.SilentAim = not DaHoodSettings.SilentAim
+    if DaHoodSettings.SilentAim then
+        sendNotification("SilentAim is now on")
+    else
+        sendNotification("SilentAim is now off")
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input, isTyping)
+    if not isTyping and input.KeyCode == Enum.KeyCode.C then
+        toggleSilentAim()
+    end
+end)
+
+
+
+
+-- // Overwrite to account downed
+function Aiming.Check()
+    -- // Check A
+    if not (Aiming.Enabled == true and Aiming.Selected ~= LocalPlayer and Aiming.SelectedPart ~= nil) then
+        return false
+    end
+
+    -- // Check if downed
+    local Character = Aiming.Character(Aiming.Selected)
+    local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
+    local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+
+    -- // Check B
+    if (KOd or Grabbed) then
+        return false
+    end
+
+    -- //
+    return true
+end
+
+-- // Hook
+local __index
+__index = hookmetamethod(game, "__index", function(t, k)
+    -- // Check if it trying to get our mouse's hit or target and see if we can use it
+    if (t:IsA("Mouse") and (k == "Hit" or k == "Target") and Aiming.Check()) then
+        -- // Vars
+        local SelectedPart = Aiming.SelectedPart
+
+        -- // Hit/Target
+        if (DaHoodSettings.SilentAim and (k == "Hit" or k == "Target")) then
+            -- // Hit to account prediction
+            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
+
+            -- // Return modded val
+            return (k == "Hit" and Hit or SelectedPart)
+        end
+    end
+
+    -- // Return
+    return __index(t, k)
+end)
+
+-- // Aimlock
+RunService:BindToRenderStep("AimLock", 0, function()
+    if (DaHoodSettings.AimLock and Aiming.Check() and UserInputService:IsKeyDown(DaHoodSettings.AimLockKeybind)) then
+        -- // Vars
+        local SelectedPart = Aiming.SelectedPart
+
+        -- // Hit to account prediction
+        local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
+
+        -- // Set the camera to face towards the Hit
+        CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position, Hit.Position)
+    end
+end)
+if camlock then
+    getgenv().RecurringPoint = "UpperTorso"
+getgenv().Hitbox = "UpperTorso"
+getgenv().Keybind = "q"
+getgenv().AimbotStrengthAmount = 0.0997
+getgenv().PredictionAmount = 11
+getgenv().Radius = 25
+getgenv().UsePrediction = true
+getgenv().AimbotStrength = true
+getgenv().FirstPerson = true
+getgenv().ThirdPerson = true
+getgenv().TeamCheck = false
+getgenv().Enabled = true
+
+
+-- // main script use with silent aim / / -- 
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tenaaki/GenericAimbot/main/v1.0.0"))()
+end
+if desync then
+    local daddylosix = "x"
+
+-- 
+--█▀▄ █▀█ █▄░█ ▀█▀   █▀ █▀█ ▄▀█ █▀▄▀█
+--█▄▀ █▄█ █░▀█ ░█░   ▄█ █▀▀ █▀█ █░▀░█ , IT WILL BREAK (WAIT A FEW SECONDS BEFORE TOGGLING)
+
+--[[
+	Standing still will trick the hitbox, you won't be able to get hit.
+
+    NOTIFICATION MODE MADE BY LOSIX OMG HES SO HOT, 
+    
+    HE ALSO MADE IT LOOK MORE LEGIT BECAUSE HE HAS EGIRLS ON HIM AT ALL TIMES
+--]]
+--// Services
+checkcaller = checkcaller
+newcclosure = newcclosure
+hookmetamethod = hookmetamethod
+
+local PastedSources = false
+local BruhXD = game:GetService("RunService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Bullshit = LocalPlayer:GetMouse()
+
+
+--// Toggles
+Bullshit.KeyDown:Connect(function(SayNoToOblivity)
+    if SayNoToOblivity == string.lower(daddylosix) then
+        pcall(function()
+            if PastedSources == false then
+                PastedSources = true
+                game:GetService("StarterGui"):SetCore("SendNotification", {
+                    Title = "Enabled",
+                    Text = "Desync Has Been Enabled",
+                    Duration = 2
+                })
+            elseif PastedSources == true then
+                PastedSources = false
+                game:GetService("StarterGui"):SetCore("SendNotification", {
+                    Title = "Disabled",
+                    Text = "Desync Has Been Disabled",
+                    Duration = 2
+                })
+            end
+        end)
+    end
+end)
+
+
+Bullshit.KeyDown:Connect(function(SayNoToOblivity)
+	if SayNoToOblivity == ("=") then
+		game:GetService("TeleportService"):Teleport(game.PlaceId, LocalPlayer) 
+	end
+end)
+
+
+--// Desync_Source
+function RandomNumberRange(a)
+	return math.random(-a * 100, a * 100) / 100
+end
+
+function RandomVectorRange(a, b, c)
+	return Vector3.new(RandomNumberRange(a), RandomNumberRange(b), RandomNumberRange(c))
+end
+
+
+local DesyncTypes = {}
+BruhXD.Heartbeat:Connect(function()
+	if PastedSources == true then
+		DesyncTypes[1] = LocalPlayer.Character.HumanoidRootPart.CFrame
+		DesyncTypes[2] = LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity
+
+		local SpoofThis = LocalPlayer.Character.HumanoidRootPart.CFrame
+
+		SpoofThis = SpoofThis * CFrame.new(Vector3.new(0, 0, 0))
+		SpoofThis = SpoofThis * CFrame.Angles(math.rad(RandomNumberRange(180)), math.rad(RandomNumberRange(180)), math.rad(RandomNumberRange(180)))
+
+		LocalPlayer.Character.HumanoidRootPart.CFrame = SpoofThis
+
+		LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(1, 1, 1) * 16384
+
+		BruhXD.RenderStepped:Wait()
+
+		LocalPlayer.Character.HumanoidRootPart.CFrame = DesyncTypes[1]
+		LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = DesyncTypes[2]
+	end
+end)
+
+
+--// Hook_CFrame
+local XDDDDDD = nil
+XDDDDDD = hookmetamethod(game, "__index", newcclosure(function(self, key)
+	if PastedSources == true then
+		if not checkcaller() then
+			if key == "CFrame" and PastedSources == true and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character:FindFirstChild("Humanoid") and LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 then
+				if self == LocalPlayer.Character.HumanoidRootPart then
+					return DesyncTypes[1] or CFrame.new()
+				elseif self == LocalPlayer.Character.Head then
+					return DesyncTypes[1] and DesyncTypes[1] + Vector3.new(0, LocalPlayer.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or CFrame.new()
+				end
+			end
+		end
+	end
+	return XDDDDDD(self, key)
+end))
+end
+if macro then
+    getgenv().macrokey = "q"
+getgenv().macrospeed = 1.10 -- the lower fps u have the higher u put this
+getgenv().macrotype = "normal" -- normal or mouse
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FederalW/scripts/main/macro"))()
+end
